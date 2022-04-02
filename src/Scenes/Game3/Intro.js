@@ -143,7 +143,7 @@ const BaseScene = React.forwardRef(({ nextFunc, _geo, _baseGeo, showMusicBtn }, 
                         />
                     </div>
 
-                    <div
+                    {/* <div
                         style={{
                             position: "fixed", width: _geo.width * 0.8 + "px",
                             left: _geo.width * 0.3 + _geo.left + "px"
@@ -152,7 +152,7 @@ const BaseScene = React.forwardRef(({ nextFunc, _geo, _baseGeo, showMusicBtn }, 
                         <img draggable={false} width={"100%"}
                             src={prePathUrl() + 'images/SB_53_BG-Intro/Game3/SB_53_Intro_game3_Stars_01 .svg'}
                         />
-                    </div>
+                    </div> */}
                     {/* {isShow && */}
                     <div
                         className='introText'
@@ -173,8 +173,8 @@ const BaseScene = React.forwardRef(({ nextFunc, _geo, _baseGeo, showMusicBtn }, 
                         onClick={clickFunc}
                         style={{
                             position: "fixed", width: _geo.width * 0.1 + "px",
-                            left: _geo.width * 0.45 + _geo.left + "px"
-                            , top: _geo.height * 0.5 + _geo.top + "px",
+                            left: _geo.width * 0.6 + _geo.left + "px"
+                            , top: _geo.height * 0.65 + _geo.top + "px",
                             cursor: "pointer",
                             pointerEvents: 'none'
                         }}>
