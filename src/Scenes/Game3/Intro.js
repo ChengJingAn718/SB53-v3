@@ -4,10 +4,11 @@ import "../../stylesheets/styles.css";
 import Lottie from "react-lottie-segments";
 import loadAnimation from '../../utils/loadAnimation'
 import { UserContext } from '../../components/BaseShot';
-import { prePathUrl, initialAudio, startRepeatAudio } from '../../components/CommonFunctions';
+import { prePathUrl, initialAudio, startRepeatAudio, blinkFunc, stopBlinkFunc } from '../../components/CommonFunctions';
 import GamePanel from "./GamePanel"
 import Review from "./Review"
 import loadSound from '../../utils/loadSound';
+import BaseImage from '../../components/BaseImage';
 var isGameStarted = false;
 
 let animationList = []
@@ -20,7 +21,7 @@ new loadAnimation('main/Chicken2_1.json').then(result => {
 }, () => { });
 
 let timerList = []
-
+let eyeNum = 0
 const BaseScene = React.forwardRef(({ nextFunc, _geo, _baseGeo, showMusicBtn }, ref) => {
 
     const audioList = useContext(UserContext)
@@ -30,6 +31,7 @@ const BaseScene = React.forwardRef(({ nextFunc, _geo, _baseGeo, showMusicBtn }, 
 
     const playBtnRef = useRef();
     const gamePanelRef = useRef();
+    const eyeRefList = [useRef(), useRef(), useRef(), useRef()]
     // const [isShow, setShow] = useState(false)
 
     useEffect(() => {
@@ -52,6 +54,7 @@ const BaseScene = React.forwardRef(({ nextFunc, _geo, _baseGeo, showMusicBtn }, 
             playBtnRef.current.style.pointerEvents = ''
         }, 3000);
 
+        eyeNum = blinkFunc(eyeRefList, 0, 3000)
 
         playBtnRef.current.className = 'hide'
 
@@ -93,6 +96,7 @@ const BaseScene = React.forwardRef(({ nextFunc, _geo, _baseGeo, showMusicBtn }, 
             gamePanelRef.current.style.opacity = 1
             setTimeout(() => {
 
+                stopBlinkFunc(eyeNum)
                 timerList[0] = setTimeout(() => {
                     audioList.bodyAudio.play();
                     timerList[1] = setTimeout(() => {
@@ -135,13 +139,24 @@ const BaseScene = React.forwardRef(({ nextFunc, _geo, _baseGeo, showMusicBtn }, 
                     <div
                         style={{
                             position: "fixed", width: _geo.width * 0.3 + "px",
+                            height: _geo.width * 0.3 + "px",
                             left: _geo.width * 0.15 + _geo.left + "px"
-                            , bottom: _geo.height * 0.2 + _geo.top + "px",
+                            , bottom: _geo.height * 0.215 + _geo.top + "px",
                         }}>
-                        <img draggable={false} width={"100%"}
-                            src={prePathUrl() + 'images/SB_53_BG-Intro/Game3/SB_53_Intro_game3_alien_01 .svg'}
+                        <BaseImage
+                            url={'SB_53_BG-Intro/Game3/SB_53_Intro_game3_alien_01 .svg'}
                         />
+                        {[0, 1, 2, 3].map(value =>
+                            <BaseImage
+                                ref={eyeRefList[3 - value]}
+                                scale={.68}
+                                posInfo={{ l: .23, t: .127 }}
+                                className='hideObject'
+                                url={'animations/SB53_intro_eyeblink_0' + (value + 1) + '.svg'}
+                            />)}
                     </div>
+
+
 
                     {/* <div
                         style={{

@@ -1,3 +1,12 @@
+let saveRefList = []
+var intervalList = []
+var innerIntervalList = []
+var timerList = []
+
+
+
+
+
 export function initialAudio(audioList) {
     let allkeys = Object.keys(audioList)
     for (let i = 0; i < allkeys.length; i++) {
@@ -75,4 +84,67 @@ export function stopRepeatAudio() {
     clearTimeout(repeartTimer)
     clearInterval(repeatInterval)
 
+}
+
+
+
+
+export function blinkFunc(refList, delay, interval, delRefList = []) {
+    var currentNum = timerList.length;
+    var isPlus = true;
+    var currentIndex = 0;
+
+    if (delRefList.length > 0)
+        delRefList.map(ref => {
+            ref.current.setClass('character-disappear')
+        })
+    if (refList[0].current != null)
+        refList[0].current.setClass('character-appear')
+
+    saveRefList[currentNum] = refList
+    timerList.push(
+        setTimeout(() => {
+            intervalList.push(
+                setInterval(() => {
+                    if (innerIntervalList[currentNum] != null)
+                        clearInterval(innerIntervalList[currentNum])
+                    innerIntervalList[currentNum] = setInterval(() => {
+                        if (refList[currentIndex].current != null)
+                            refList[currentIndex].current.setClass('character-disappear')
+                        if (isPlus) {
+                            if (currentIndex < refList.length - 1)
+                                currentIndex++;
+                            else {
+                                isPlus = false
+                                currentIndex--
+                            }
+                        }
+                        else {
+                            if (currentIndex > 0)
+                                currentIndex--;
+                            else {
+                                isPlus = true;
+                                currentIndex = 0;
+                                clearInterval(innerIntervalList[currentNum])
+                            }
+                        }
+                        if (refList[currentIndex].current != null)
+                            refList[currentIndex].current.setClass('character-appear')
+                    }, 100);
+                }, interval)
+            )
+        }, delay)
+    )
+
+    return currentNum;
+}
+
+export function stopBlinkFunc(num) {
+    clearInterval(intervalList[num])
+    clearTimeout(timerList[num])
+    clearInterval(innerIntervalList[num])
+    saveRefList[num].map(ref => {
+        if (ref.current != null)
+            ref.current.setClass('character-disappear')
+    })
 }
