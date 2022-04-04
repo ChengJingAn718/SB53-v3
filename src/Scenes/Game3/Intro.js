@@ -96,7 +96,7 @@ const BaseScene = React.forwardRef(({ nextFunc, _geo, _baseGeo, showMusicBtn }, 
                 timerList[0] = setTimeout(() => {
                     audioList.bodyAudio.play();
                     timerList[1] = setTimeout(() => {
-                        audioList.subBodyAudio.play();
+                        // audioList.subBodyAudio.play();
                         startRepeatAudio();
                     }, audioList.bodyAudio.duration * 1000 + 1000);
                 }, 1000);
